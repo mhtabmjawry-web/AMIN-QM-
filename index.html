@@ -1,0 +1,662 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آزمون‌ساز حرفه‌ای AMIN QM | سوالات مفهومی و سخت</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <div class="container">
+        <!-- هدر -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-brain header-icon"></i>
+                    <h1>آزمون‌ساز حرفه‌ای AMIN QM</h1>
+                    <p class="subtitle">سوالات مفهومی و سخت برای سنجش عمق یادگیری</p>
+                    <p class="version">نسخه 3.6.5 - "DIAMOND IS A COAL THAT DIDN'T SURRENDER UNDER PRESSURE"</p>
+                </div>
+                <div class="header-actions">
+                    <button id="themeToggle" class="btn-theme">
+                        <i class="fas fa-moon"></i>
+                        <span>تغییر تم</span>
+                    </button>
+                    <button id="helpBtn" class="btn-help">
+                        <i class="fas fa-question-circle"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- مراحل کار -->
+        <div class="steps-container">
+            <div class="steps">
+                <div class="step active" data-step="1">
+                    <div class="step-icon">۱</div>
+                    <div class="step-text">ورود سوالات</div>
+                </div>
+                <div class="step-line"></div>
+                <div class="step" data-step="2">
+                    <div class="step-icon">۲</div>
+                    <div class="step-text">تنظیمات آزمون</div>
+                </div>
+                <div class="step-line"></div>
+                <div class="step" data-step="3">
+                    <div class="step-icon">۳</div>
+                    <div class="step-text">شرکت در آزمون</div>
+                </div>
+                <div class="step-line"></div>
+                <div class="step" data-step="4">
+                    <div class="step-icon">۴</div>
+                    <div class="step-text">نتایج و تحلیل</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- محتوای اصلی -->
+        <main class="main-content">
+            <!-- مرحله ۱: ورود JSON -->
+            <section id="step1" class="step-section active">
+                <div class="card">
+                    <h2><i class="fas fa-code"></i> وارد کردن سوالات (JSON)</h2>
+                    <p class="section-description">
+                        JSON دریافتی از هوش مصنوعی را در کادر زیر پیست کنید. 
+                        <br>
+                        <small style="color: #666;">فرمت صحیح: JSON با ساختار مشخص شده در پرامپت حرفه‌ای</small>
+                    </p>
+                    
+                    <div class="input-group">
+                        <label for="quiz-title"><i class="fas fa-heading"></i> عنوان آزمون</label>
+                        <input type="text" id="quiz-title" placeholder="مثال: آزمون پیشرفته زیست‌شناسی فصل ۳ - سطح سخت">
+                    </div>
+                    
+                    <div class="json-editor">
+                        <div class="editor-header">
+                            <span><i class="fas fa-file-code"></i> ویرایشگر JSON</span>
+                            <div class="editor-actions">
+                                <span class="char-count" id="charCount">0 کاراکتر</span>
+                                <button id="formatJson" class="btn-small">
+                                    <i class="fas fa-align-left"></i> فرمت‌بندی
+                                </button>
+                            </div>
+                        </div>
+                        <textarea id="jsonInput" placeholder='{
+  "quiz_title": "آزمون پیشرفته [موضوع]",
+  "questions": [
+    {
+      "id": 1,
+      "question": "سوال مفهومی و سخت؟",
+      "options": ["گزینه ۱", "گزینه ۲", "گزینه ۳", "گزینه ۴"],
+      "correct_answer": 2,
+      "explanation": "توضیح کامل پاسخ..."
+    }
+  ]
+}'></textarea>
+                        <div class="editor-footer">
+                            <span class="hint">
+                                <i class="fas fa-info-circle"></i>
+                                برای دریافت JSON با کیفیت از پرامپت حرفه‌ای استفاده کنید
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="btnSample" class="btn btn-outline">
+                            <i class="fas fa-vial"></i> آزمون نمونه
+                        </button>
+                        <button id="btnClear" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> پاک کردن
+                        </button>
+                        <button id="btnValidate" class="btn btn-secondary">
+                            <i class="fas fa-check-circle"></i> بررسی صحت
+                        </button>
+                        <button id="btnLoadQuiz" class="btn btn-primary">
+                            <i class="fas fa-rocket"></i> بارگذاری آزمون
+                            <span class="btn-badge" id="questionCount">0</span>
+                        </button>
+                    </div>
+                    
+                    <div class="tips-box">
+                        <h4><i class="fas fa-lightbulb"></i> راهنمای سریع:</h4>
+                        <ul>
+                            <li><strong>پرامپت حرفه‌ای:</strong> برای ساخت سوالات سخت و مفهومی از پرامپت ویژه استفاده کنید</li>
+                            <li><strong>بررسی JSON:</strong> پس از پیست حتماً بررسی صحت را انجام دهید</li>
+                            <li><strong>آزمون نمونه:</strong> برای آشنایی با سیستم ابتدا آزمون نمونه را بارگذاری کنید</li>
+                            <li><strong>ذخیره خودکار:</strong> آزمون شما به طور خودکار در مرورگر ذخیره می‌شود</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <h3><i class="fas fa-bolt"></i> دسترسی سریع</h3>
+                    <div class="quick-buttons">
+                        <button id="copyPrompt" class="quick-btn">
+                            <i class="fas fa-copy"></i> کپی پرامپت
+                        </button>
+                        <button id="importFile" class="quick-btn">
+                            <i class="fas fa-file-import"></i> وارد کردن از فایل
+                        </button>
+                        <button id="saveDraft" class="quick-btn">
+                            <i class="fas fa-save"></i> ذخیره پیش‌نویس
+                        </button>
+                        <button id="loadDraft" class="quick-btn">
+                            <i class="fas fa-folder-open"></i> بارگذاری پیش‌نویس
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- مرحله ۲: تنظیمات -->
+            <section id="step2" class="step-section">
+                <div class="card">
+                    <h2><i class="fas fa-cog"></i> تنظیمات آزمون</h2>
+                    <p class="section-description">
+                        پارامترهای آزمون را مطابق نیاز خود تنظیم کنید
+                    </p>
+                    
+                    <div class="settings-grid">
+                        <div class="setting-item">
+                            <label for="timeLimit">
+                                <i class="fas fa-clock"></i>
+                                محدودیت زمان (دقیقه)
+                            </label>
+                            <div class="slider-container">
+                                <input type="range" id="timeLimit" min="5" max="180" value="60" class="slider">
+                                <span class="slider-value" id="timeValue">60 دقیقه</span>
+                            </div>
+                            <small>زمان کل آزمون - ۰ برای بدون محدودیت</small>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <label for="questionOrder">
+                                <i class="fas fa-random"></i>
+                                ترتیب سوالات
+                            </label>
+                            <select id="questionOrder" class="select-input">
+                                <option value="sequential">ترتیب اصلی</option>
+                                <option value="random">تصادفی</option>
+                                <option value="difficulty">بر اساس سختی</option>
+                            </select>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <label for="showExplanation">
+                                <i class="fas fa-info-circle"></i>
+                                نمایش توضیحات
+                            </label>
+                            <select id="showExplanation" class="select-input">
+                                <option value="after_each">پس از هر سوال</option>
+                                <option value="after_quiz">پس از آزمون</option>
+                                <option value="on_demand">فقط در صورت درخواست</option>
+                                <option value="never">هرگز</option>
+                            </select>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <label for="passingScore">
+                                <i class="fas fa-chart-line"></i>
+                                نمره قبولی (درصد)
+                            </label>
+                            <div class="slider-container">
+                                <input type="range" id="passingScore" min="0" max="100" value="70" class="slider">
+                                <span class="slider-value" id="scoreValue">70%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item full-width">
+                            <label>
+                                <i class="fas fa-toggle-on"></i>
+                                ویژگی‌های پیشرفته
+                            </label>
+                            <div class="checkbox-group">
+                                <label class="checkbox">
+                                    <input type="checkbox" id="allowMark" checked>
+                                    <span class="checkmark"></span>
+                                    امکان علامت‌گذاری سوالات
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" id="autoSave" checked>
+                                    <span class="checkmark"></span>
+                                    ذخیره خودکار پاسخ‌ها
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" id="showTimer" checked>
+                                    <span class="checkmark"></span>
+                                    نمایش تایمر
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" id="fullScreen" checked>
+                                    <span class="checkmark"></span>
+                                    حالت تمام صفحه در آزمون
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-actions">
+                        <button id="btnBackStep1" class="btn btn-secondary">
+                            <i class="fas fa-arrow-right"></i> مرحله قبل
+                        </button>
+                        <button id="btnStartQuiz" class="btn btn-primary">
+                            <i class="fas fa-play-circle"></i> شروع آزمون
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- مرحله ۳: آزمون -->
+            <section id="step3" class="step-section">
+                <div class="quiz-container">
+                    <!-- هدر آزمون -->
+                    <div class="quiz-header">
+                        <div class="quiz-title-time">
+                            <h2 id="currentQuizTitle">آزمون در حال اجرا</h2>
+                            <div class="timer-container">
+                                <div class="timer-display" id="timerDisplay">
+                                    <i class="fas fa-hourglass-half"></i>
+                                    <span id="timerText">60:00</span>
+                                </div>
+                                <div class="timer-progress">
+                                    <div class="timer-bar" id="timerBar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="quiz-stats">
+                            <div class="stat">
+                                <span class="stat-label">سوال فعلی</span>
+                                <span class="stat-value" id="currentQuestionNum">1</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">کل سوالات</span>
+                                <span class="stat-value" id="totalQuestionsNum">0</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">پاسخ داده</span>
+                                <span class="stat-value" id="answeredCount">0</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">علامت‌دار</span>
+                                <span class="stat-value" id="markedCount">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- نوار پیشرفت -->
+                    <div class="progress-quiz">
+                        <div class="progress-fill" id="quizProgress"></div>
+                        <div class="progress-labels">
+                            <span>شروع</span>
+                            <span id="progressPercent">0%</span>
+                            <span>پایان</span>
+                        </div>
+                    </div>
+                    
+                    <!-- سوالات -->
+                    <div class="questions-wrapper">
+                        <div id="questionsContainer" class="questions-container">
+                            <!-- سوالات اینجا رندر می‌شوند -->
+                        </div>
+                        
+                        <!-- پنل کناری برای علامت‌گذاری -->
+                        <div class="sidebar">
+                            <div class="sidebar-section">
+                                <h4><i class="fas fa-flag"></i> سوالات علامت‌دار</h4>
+                                <div class="marked-questions" id="markedQuestions">
+                                    <p class="empty-state">هنوز سوالی علامت‌دار نشده</p>
+                                </div>
+                            </div>
+                            
+                            <div class="sidebar-section">
+                                <h4><i class="fas fa-list-ol"></i> لیست سوالات</h4>
+                                <div class="question-list" id="questionList">
+                                    <!-- شماره سوالات اینجا اضافه می‌شود -->
+                                </div>
+                            </div>
+                            
+                            <div class="sidebar-actions">
+                                <button id="btnFullscreen" class="btn-sidebar">
+                                    <i class="fas fa-expand"></i> تمام صفحه
+                                </button>
+                                <button id="btnReview" class="btn-sidebar">
+                                    <i class="fas fa-eye"></i> مرور پاسخ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ناوبری -->
+                    <div class="quiz-navigation">
+                        <button id="btnPrevQuestion" class="btn btn-secondary">
+                            <i class="fas fa-arrow-right"></i> سوال قبلی
+                        </button>
+                        
+                        <div class="nav-center">
+                            <button id="btnMarkQuestion" class="btn btn-outline">
+                                <i class="far fa-flag"></i> علامت‌گذاری
+                            </button>
+                            <button id="btnClearAnswer" class="btn btn-outline">
+                                <i class="fas fa-eraser"></i> پاک کردن پاسخ
+                            </button>
+                        </div>
+                        
+                        <button id="btnNextQuestion" class="btn btn-primary">
+                            سوال بعدی <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- دکمه ارسال -->
+                    <div class="submit-section">
+                        <div class="submit-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>پس از ارسال امکان تغییر پاسخ وجود ندارد</span>
+                        </div>
+                        <button id="btnSubmitQuiz" class="btn btn-success btn-lg">
+                            <i class="fas fa-paper-plane"></i> ارسال آزمون
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- مرحله ۴: نتایج -->
+            <section id="step4" class="step-section">
+                <div class="results-container">
+                    <!-- کارت خلاصه نتایج -->
+                    <div class="result-summary">
+                        <div class="result-header">
+                            <i class="fas fa-trophy result-icon"></i>
+                            <h2>نتایج آزمون</h2>
+                            <p id="resultQuizTitle" class="result-subtitle">آزمون پیشرفته</p>
+                        </div>
+                        
+                        <div class="score-main">
+                            <div class="score-circle">
+                                <div class="circle-wrapper">
+                                    <svg width="200" height="200" viewBox="0 0 200 200">
+                                        <circle cx="100" cy="100" r="90" class="circle-bg"></circle>
+                                        <circle cx="100" cy="100" r="90" class="circle-progress" 
+                                                id="scoreCircle"></circle>
+                                    </svg>
+                                    <div class="circle-text">
+                                        <span id="scorePercentage">0%</span>
+                                        <small>درصد کل</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="score-details">
+                                <div class="detail-row">
+                                    <div class="detail-item correct">
+                                        <div class="detail-icon">
+                                            <i class="fas fa-check-circle"></i>
+                                        </div>
+                                        <div class="detail-content">
+                                            <span class="detail-label">پاسخ صحیح</span>
+                                            <span class="detail-value" id="correctAnswers">0</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="detail-item incorrect">
+                                        <div class="detail-icon">
+                                            <i class="fas fa-times-circle"></i>
+                                        </div>
+                                        <div class="detail-content">
+                                            <span class="detail-label">پاسخ نادرست</span>
+                                            <span class="detail-value" id="incorrectAnswers">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="detail-row">
+                                    <div class="detail-item unanswered">
+                                        <div class="detail-icon">
+                                            <i class="far fa-circle"></i>
+                                        </div>
+                                        <div class="detail-content">
+                                            <span class="detail-label">بی‌پاسخ</span>
+                                            <span class="detail-value" id="unansweredCount">0</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="detail-item time">
+                                        <div class="detail-icon">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div class="detail-content">
+                                            <span class="detail-label">زمان صرف شده</span>
+                                            <span class="detail-value" id="timeSpent">0:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="result-status" id="resultStatus">
+                            <!-- وضعیت قبولی/رد اینجا نمایش داده می‌شود -->
+                        </div>
+                    </div>
+                    
+                    <!-- نمودارها و تحلیل -->
+                    <div class="analysis-section">
+                        <div class="analysis-card">
+                            <h3><i class="fas fa-chart-bar"></i> تحلیل عملکرد</h3>
+                            <div class="chart-container">
+                                <canvas id="performanceChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="analysis-card">
+                            <h3><i class="fas fa-chart-pie"></i> توزیع پاسخ‌ها</h3>
+                            <div class="chart-container">
+                                <canvas id="distributionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- مرور سوالات -->
+                    <div class="review-section">
+                        <div class="review-header">
+                            <h3><i class="fas fa-search"></i> مرور سوالات</h3>
+                            <div class="review-filters">
+                                <div class="checkbox-filters">
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" class="filter-option" value="all" checked>
+                                        <span class="filter-label">همه</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" class="filter-option" value="correct" checked>
+                                        <span class="filter-label">صحیح</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" class="filter-option" value="incorrect" checked>
+                                        <span class="filter-label">نادرست</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" class="filter-option" value="unanswered" checked>
+                                        <span class="filter-label">بی‌پاسخ</span>
+                                    </label>
+                                    <label class="filter-checkbox">
+                                        <input type="checkbox" class="filter-option" value="marked" checked>
+                                        <span class="filter-label">علامت‌دار</span>
+                                    </label>
+                                </div>
+                                <div class="pdf-options">
+                                    <button id="btnSelectForPDF" class="btn-small">
+                                        <i class="fas fa-file-pdf"></i> انتخاب برای PDF
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="questionsReview" class="questions-review">
+                            <!-- سوالات برای مرور اینجا نمایش داده می‌شوند -->
+                        </div>
+                        
+                        <!-- انتخاب سوالات برای PDF -->
+                        <div id="pdfSelectionPanel" class="pdf-selection-panel" style="display: none;">
+                            <h4><i class="fas fa-file-pdf"></i> انتخاب سوالات برای PDF</h4>
+                            <div class="pdf-selection-controls">
+                                <div class="selection-actions">
+                                    <button id="btnSelectAllPDF" class="btn-small">
+                                        <i class="fas fa-check-square"></i> انتخاب همه
+                                    </button>
+                                    <button id="btnDeselectAllPDF" class="btn-small">
+                                        <i class="far fa-square"></i> لغو انتخاب همه
+                                    </button>
+                                    <button id="btnSelectCorrectPDF" class="btn-small">
+                                        <i class="fas fa-check-circle"></i> فقط صحیح‌ها
+                                    </button>
+                                    <button id="btnSelectIncorrectPDF" class="btn-small">
+                                        <i class="fas fa-times-circle"></i> فقط نادرست‌ها
+                                    </button>
+                                </div>
+                                <div class="selection-count">
+                                    <span id="selectedCount">0</span> سوال انتخاب شده
+                                </div>
+                            </div>
+                            <div class="pdf-selection-list" id="pdfSelectionList">
+                                <!-- لیست سوالات برای انتخاب -->
+                            </div>
+                            <div class="pdf-generation">
+                                <button id="btnGeneratePDF" class="btn btn-primary">
+                                    <i class="fas fa-file-pdf"></i> تولید و دانلود PDF
+                                </button>
+                                <button id="btnCancelPDF" class="btn btn-secondary">
+                                    <i class="fas fa-times"></i> انصراف
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- اقدامات نهایی -->
+                    <div class="final-actions">
+                        <button id="btnNewQuiz" class="btn btn-primary">
+                            <i class="fas fa-redo"></i> آزمون جدید
+                        </button>
+                        <button id="btnPrintResults" class="btn btn-outline">
+                            <i class="fas fa-print"></i> چاپ نتایج
+                        </button>
+                        <button id="btnQuickPDF" class="btn btn-outline">
+                            <i class="fas fa-download"></i> دانلود PDF کامل
+                        </button>
+                        <button id="btnShareResults" class="btn btn-secondary">
+                            <i class="fas fa-share-alt"></i> اشتراک‌گذاری
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- فوتر -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4><i class="fas fa-graduation-cap"></i> آزمون‌ساز حرفه‌ای AMIN QM</h4>
+                    <p>ابزار قدرتمند برای یادگیری عمیق و سنجش مفهومی</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>ویژگی‌های نسخه 3.6.5</h4>
+                    <ul>
+                        <li>دانلود PDF پیشرفته با انتخاب سوالات</li>
+                        <li>سیستم چاپ بهبود یافته</li>
+                        <li>فیلترهای چند انتخابی</li>
+                        <li>طراحی بدون اسکرول داخلی</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>راهنمای سریع</h4>
+                    <p>برای بهترین نتایج از پرامپت حرفه‌ای استفاده کنید</p>
+                    <button id="showPromptGuide" class="btn-small">
+                        <i class="fas fa-code"></i> مشاهده پرامپت
+                    </button>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>
+                    طراحی شده با <i class="fas fa-heart" style="color: #e74c3c;"></i> | 
+                    آزمون‌ساز حرفه‌ای AMIN QM v3.6.5 | 
+                    <span id="currentYear">2024</span>
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- مدال پرامپت -->
+    <div id="promptModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-code"></i> پرامپت حرفه‌ای برای هوش مصنوعی</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <textarea id="promptText" readonly>لطفا از متن درسی زیر، یک آزمون تستی بسیار سخت و مفهومی طراحی کن که عمق یادگیری را به چالش بکشد.
+
+[متن درسی خودت را اینجا پیست کن]
+
+مشخصات آزمون:
+- تعداد سوالات: [عدد مورد نظرت را اینجا بنویس]
+- سطح دشواری: فوق‌العاده سخت (سوالات باید عمیقاً مفهومی، ترکیبی و چالش‌برانگیز باشد)
+- انواع سوالات: فقط چهارگزینه‌ای (۴ گزینه)
+- ویژگی‌های کلیدی:
+  ۱. سوالات سناریو‌محور و مسئله‌محور
+  ۲. گزینه‌های بسیار نزدیک و گمراه‌کننده
+  ۳. پوشش کامل نکات ریز و استثناها
+  ۴. سوالات تطبیقی و مقایسه‌ای
+  ۵. تاکید بر درک عمیق نه حفظیات
+
+- ساختار خروجی: JSON با فرمت زیر
+
+{
+  "quiz_title": "آزمون پیشرفته [موضوع]",
+  "questions": [
+    {
+      "id": 1,
+      "question": "متن سوال بسیار سخت و مفهومی؟",
+      "options": ["گزینه اول (گمراه‌کننده)", "گزینه دوم (نیمه صحیح)", "گزینه سوم (صحیح)", "گزینه چهارم (کاملاً غلط)"],
+      "correct_answer": 2,
+      "explanation": "توضیح کامل و مفهومی که چرا این گزینه صحیح است و چرا بقیه غلط هستند. نکات کلیدی را مرور کن."
+    }
+  ]
+}</textarea>
+                <div class="modal-actions">
+                    <button id="copyPromptBtn" class="btn btn-primary">
+                        <i class="fas fa-copy"></i> کپی پرامپت
+                    </button>
+                    <button id="closeModal" class="btn btn-secondary">بستن</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- اسکریپت‌ها -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('pwabuilder-sw.js')
+                    .then(function(registration) {
+                        console.log('Service Worker ثبت شد با scope:', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('خطا در ثبت Service Worker:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
